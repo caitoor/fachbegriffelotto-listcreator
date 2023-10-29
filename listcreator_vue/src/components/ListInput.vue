@@ -1,7 +1,7 @@
 <template>
   <div>
-    <input type="text" v-model="filename" placeholder="Enter filename" />
-    <textarea v-model="expressions" rows="10" cols="30"></textarea>
+    <input type="text" v-model="filename" placeholder="Enter filename" /><br>
+    <textarea v-model="expressions" rows="10" cols="30"></textarea><br>
     <button @click="processExpressions">Process</button>
   </div>
 </template>
