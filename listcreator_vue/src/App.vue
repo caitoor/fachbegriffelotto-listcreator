@@ -3,7 +3,7 @@
     <h3>Lustige Listen für das lustige Fachbegriffelotto</h3>
     <ListInput />
     <h5>Beispielbegriffe</h5>
-    <ul>
+     <ul>
       <li>MQTT</li>
       <li>ESP32</li>
       <li>Websockets</li>
@@ -23,3 +23,9 @@ export default {
   }
 }
 </script>
+
+<style>
+* {
+  font-family: 'Fira Sans', "Courier New", sans-monospace;
+}
+</style>

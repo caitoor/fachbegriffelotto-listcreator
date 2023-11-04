@@ -4,6 +4,7 @@ const cors = require('cors');
 const axios = require('axios');
 const dotenv = require('dotenv');
 dotenv.config();
+const prompts = require('./prompts');
 
 app.use(cors({
     origin: 'http://localhost:8080',  // replace with your application's URL
@@ -19,25 +20,12 @@ app.post('/process-expressions', async (req, res) => {
     checkOpenAIKey(res);
 
     try {
-        const prompt =
-            `Ich gebe dir eine Liste an Fachbegriffen. Du erstellst für jeden Begriff eine Erklärung in einem Satz, ohne dabei den Fachbegriff zu nutzen. Außerdem vergibst du ein Komplexitäts-Rating, das bewertet, wie schwer es ist, eine Defintion des Begriffs aus dem Stegreif vorzutragen (1-10). Der Wert 1 soll hier etwa "Pixel" entsprechen, während 10 für Begriffe wie "Quantenverschränkung" gedacht ist. Die Ausgabe erfolgt als JSON mit der folgenden Struktur:
-    [{
-      "expression": <String>,
-      "description_short": <String>,
-      "complexity": <int>
-    }, ...]
-    Hier die Liste:
-    ${req.body.prompt}
-    
-    Deine Ausgabe ist ausschließlich die JSON, nichts anderes.`;
-        // console.log(`prompt: ${prompt}`);
+        const prompt = `${prompts.processExpressions.prompt}${req.body.prompt}`;
         const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions', {
             prompt: prompt,
-            temperature: 0.2,
+            temperature: prompts.processExpressions.temperature,
             top_p: 1.0,
-            max_tokens: 3000,
-            frequency_penalty: 0.0,
-            presence_penalty: 0.0,
+            max_tokens: prompts.processExpressions.maxTokens,
         }, {
             headers: {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -65,16 +53,11 @@ app.post('/get-easy-expressions', async (req, res) => {
     checkOpenAIKey(res);
     try {
         const listOfTerms = req.body.terms;
-
-        const prompt = `Sie bekommen eine Liste von Begriffen, die es zu erklären gilt. Ihre Aufgabe ist es, diese Liste um einen weiteren Begriff zu erweitern, der thematisch zu den anderen Begriffen passt. Der Begriff, den Sie hinzufügen, muss einfacher zu erklären sein als all diejenigen, die auf der Liste stehen. Machen Sie eine Liste mit 5 Vorschlägen, ohne die Begriffe zu erklären und antworten Sie mit nichts als einem Arraystring, der diese 5 Begriffe auf folgende Art beinhaltet:
-    [<String>, <String>,…]
-    Hier ist die Liste an Begriffen:
-    ${req.body.prompt}`;
-
+        const prompt = `${prompts.getEasyExpressions.prompt}${req.body.prompt}`;
         const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions', {
             prompt: prompt,
-            temperature: 0.2,
-            max_tokens: 1000,
+            temperature: prompts.getEasyExpressions.temperature,
+            max_tokens: prompts.getEasyExpressions.maxTokens,
         }, {
             headers: {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -105,16 +88,11 @@ app.post('/get-complex-expressions', async (req, res) => {
 
     try {
         const listOfTerms = req.body.terms;
-
-        const prompt = `Sie bekommen eine Liste von Begriffen, die es zu erklären gilt. Ihre Aufgabe ist es, diese Liste um einen weiteren Begriff zu erweitern, der thematisch zu den anderen Begriffen passt. Der Begriff, den Sie hinzufügen, muss schwieriger zu erklären sein als all diejenigen, die auf der Liste stehen. Machen Sie eine Liste mit 5 Begriffsvorschlägen, ohne die Begriffe zu erklären und antworten Sie mit nichts als einem Arraystring, der diese 5 Begriffe auf folgende Art beinhaltet:
-        [<String>, <String>,…]
-    Hier ist die Liste an Begriffen:
-    ${req.body.prompt}`;
-
+        const prompt = `${prompts.getComplexExpressions.prompt}${req.body.prompt}`;
         const response = await axios.post('https://api.openai.com/v1/engines/text-davinci-003/completions', {
             prompt: prompt,
-            temperature: 0.2,
-            max_tokens: 1000,
+            temperature: prompts.getComplexExpressions.temperature,
+            max_tokens: prompts.getComplexExpressions.maxTokens,
         }, {
             headers: {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,

@@ -4,13 +4,19 @@
       <input type="text" v-model="filename" placeholder="Enter filename" /><br>
       <textarea v-model="expressions" rows="10" cols="30"></textarea><br>
       <button @click="getEasyExpressions">easy</button>
+      <button @click="getComplexExpressions">complex</button>
       <br>
       <button @click="processExpressions">Download JSON</button>
 
     </div>
     <div id="additional-listitems-interface">
       <ExpressionSelector v-if="Array.isArray(easyExpressions) && easyExpressions.length > 0"
-        :expressions="easyExpressions" ref="expressionSelector" />
+        :expressions="easyExpressions" ref="easyExpressionSelector" title="Easy Expressions" name="easyExpressions" />
+
+
+      <ExpressionSelector v-if="Array.isArray(complexExpressions) && complexExpressions.length > 0"
+        :expressions="complexExpressions" ref="complexExpressionSelector" title="Complex Expressions"
+        name="complexExpressions" />
     </div>
   </div>
 </template>
@@ -24,7 +30,8 @@ export default {
     return {
       expressions: '',
       filename: '',
-      easyExpressions: []
+      easyExpressions: [],
+      complexExpressions: []
     };
   },
   components: {
@@ -32,11 +39,15 @@ export default {
   },
   methods: {
     processExpressions() {
-      // Get the selected expression from the ExpressionSelector component
-      const selectedExpression = this.$refs.expressionSelector?.selectedExpression;
-      // If there's a selected expression, prepend it to the expressions string
-      const fullExpressions = selectedExpression ? `${this.expressions}\n${selectedExpression}` : this.expressions;
-
+      const selectedEasyExpression = this.$refs.easyExpressionSelector?.selectedExpression;
+      const selectedComplexExpression = this.$refs.complexExpressionSelector?.selectedExpression;
+      let fullExpressions = this.expressions;
+      if (selectedEasyExpression) {
+        fullExpressions += `\n${selectedEasyExpression}`;
+      }
+      if (selectedComplexExpression) {
+        fullExpressions += `\n${selectedComplexExpression}`;
+      }
       axios.post('http://localhost:3000/process-expressions/', {
         prompt: fullExpressions,
       }).then(response => {
@@ -66,19 +77,27 @@ export default {
       }).catch(error => {
         console.error(error);
       });
+    },
+    getComplexExpressions() {
+      axios.post('http://localhost:3000/get-complex-expressions/', {
+        prompt: this.expressions,
+      }).then(response => {
+        this.complexExpressions = JSON.parse(response.data.result);
+      }).catch(error => {
+        console.error(error);
+      });
     }
   },
 };
 </script>
 
 <style scoped>
-div {
-  border: 1px solid black;
-}
-
 #list-creator {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  gap: 5px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  max-width: 600px;
+  background-color:aliceblue;
 }
 </style>
