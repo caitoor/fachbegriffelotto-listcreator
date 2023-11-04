@@ -10,5 +10,4 @@ pushd listcreator_vue
     start cmd /k "npm install && npm run serve"
     :: Open the development server in the browser
     start http://localhost:8080
-)
 popd

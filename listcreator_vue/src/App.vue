@@ -1,5 +1,8 @@
 <template>
-  <ListInput />
+  <div id="wrapper">
+    <h3>Lustige Listen für das lustige Fachbegriffelotto</h3>
+    <ListInput />
+  </div>
 </template>
 
 <script>
@@ -13,5 +16,3 @@ export default {
   }
 }
 </script>
-
-<style></style>
