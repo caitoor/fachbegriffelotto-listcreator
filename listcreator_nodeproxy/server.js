@@ -66,8 +66,8 @@ app.post('/get-easy-expressions', async (req, res) => {
     try {
         const listOfTerms = req.body.terms;
 
-        const prompt = `Sie bekommen eine Liste von Begriffen, die es zu erklären gilt. Ihre Aufgabe ist es, diese Liste um einen weiteren Begriff zu erweitern, der thematisch zu den anderen Begriffen passt. Der Begriff, den Sie hinzufügen, muss einfacher zu erklären sein als all diejenigen, die auf der Liste stehen. Machen Sie eine Liste mit 5 Vorschlägen, ohne die Begriffe zu erklären und antworten Sie mit nichts als einer JSON, die diese 5 Begriffe auf folgende Art beinhaltet:
-    [{„expressions“: [<String>, <String>,…]}]
+        const prompt = `Sie bekommen eine Liste von Begriffen, die es zu erklären gilt. Ihre Aufgabe ist es, diese Liste um einen weiteren Begriff zu erweitern, der thematisch zu den anderen Begriffen passt. Der Begriff, den Sie hinzufügen, muss einfacher zu erklären sein als all diejenigen, die auf der Liste stehen. Machen Sie eine Liste mit 5 Vorschlägen, ohne die Begriffe zu erklären und antworten Sie mit nichts als einem Arraystring, der diese 5 Begriffe auf folgende Art beinhaltet:
+    [<String>, <String>,…]
     Hier ist die Liste an Begriffen:
     ${req.body.prompt}`;
 
@@ -106,8 +106,8 @@ app.post('/get-complex-expressions', async (req, res) => {
     try {
         const listOfTerms = req.body.terms;
 
-        const prompt = `Sie bekommen eine Liste von Begriffen, die es zu erklären gilt. Ihre Aufgabe ist es, diese Liste um einen weiteren Begriff zu erweitern, der thematisch zu den anderen Begriffen passt. Der Begriff, den Sie hinzufügen, muss einfacher zu erklären sein als all diejenigen, die auf der Liste stehen. Machen Sie eine Liste mit 5 Vorschlägen, ohne die Begriffe zu erklären und antworten Sie mit nichts als einer JSON, die diese 5 Begriffe auf folgende Art beinhaltet:
-    [{„expressions“: [<String>, <String>,…]}]
+        const prompt = `Sie bekommen eine Liste von Begriffen, die es zu erklären gilt. Ihre Aufgabe ist es, diese Liste um einen weiteren Begriff zu erweitern, der thematisch zu den anderen Begriffen passt. Der Begriff, den Sie hinzufügen, muss schwieriger zu erklären sein als all diejenigen, die auf der Liste stehen. Machen Sie eine Liste mit 5 Begriffsvorschlägen, ohne die Begriffe zu erklären und antworten Sie mit nichts als einem Arraystring, der diese 5 Begriffe auf folgende Art beinhaltet:
+        [<String>, <String>,…]
     Hier ist die Liste an Begriffen:
     ${req.body.prompt}`;
 
