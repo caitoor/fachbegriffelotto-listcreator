@@ -2,13 +2,13 @@
   <div id="wrapper">
     <h3>Lustige Listen für das lustige Fachbegriffelotto</h3>
     <ListInput />
-    <h5>Beispielbegriffe</h5>
+    <!-- <h5>Beispielbegriffe</h5>
      <ul>
       <li>MQTT</li>
       <li>ESP32</li>
       <li>Websockets</li>
       <li>node.JS</li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
